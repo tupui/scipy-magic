@@ -5,6 +5,14 @@ from IPython.core.pylabtools import print_figure
 from scipy.stats._distn_infrastructure import rv_frozen
 
 
+def _repr_pretty_(distribution, p, cycle) -> str:
+    repr = (
+        f"{distribution.dist.name}(*{distribution.args},"
+        f" **{distribution.kwds})"
+    )
+    return p.text(repr)
+
+
 def _repr_png_(distribution: rv_frozen) -> bytes:
     title = (
         f"{distribution.dist.name}(args={distribution.args},"
@@ -42,4 +50,9 @@ def load_ipython_extension(ipython) -> None:
     png_f = ipython.display_formatter.formatters["image/png"]
     png_f.for_type_by_name(
         "scipy.stats._distn_infrastructure", "rv_frozen", _repr_png_
+    )
+
+    plain_f = ipython.display_formatter.formatters["text/plain"]
+    plain_f.for_type_by_name(
+        "scipy.stats._distn_infrastructure", "rv_frozen", _repr_pretty_
     )
