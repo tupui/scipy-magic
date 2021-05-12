@@ -5,11 +5,10 @@ from IPython.core.pylabtools import print_figure
 from scipy.stats._distn_infrastructure import rv_frozen
 
 
-def _repr_png_(distribution: rv_frozen):
-    name = distribution.dist.name
+def _repr_png_(distribution: rv_frozen) -> bytes:
     title = (
-        f"{name}(args={distribution.args}, kwargs={distribution.kwds}),"
-        " N=1000"
+        f"{distribution.dist.name}(args={distribution.args},"
+        f" kwargs={distribution.kwds}), N=1000"
     )
 
     fig, ax = plt.subplots()
@@ -39,7 +38,7 @@ def _repr_png_(distribution: rv_frozen):
     return data
 
 
-def load_ipython_extension(ipython):
+def load_ipython_extension(ipython) -> None:
     png_f = ipython.display_formatter.formatters["image/png"]
     png_f.for_type_by_name(
         "scipy.stats._distn_infrastructure", "rv_frozen", _repr_png_

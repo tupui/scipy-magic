@@ -5,7 +5,7 @@ from IPython.core.pylabtools import print_figure
 from scipy.stats.kde import gaussian_kde
 
 
-def _repr_png_(kde: gaussian_kde):
+def _repr_png_(kde: gaussian_kde) -> bytes:
     sample = kde.dataset
     n, dim = sample.shape
 
@@ -38,6 +38,6 @@ def _repr_png_(kde: gaussian_kde):
     return data
 
 
-def load_ipython_extension(ipython):
+def load_ipython_extension(ipython) -> None:
     png_f = ipython.display_formatter.formatters["image/png"]
     png_f.for_type_by_name("scipy.stats.kde", "gaussian_kde", _repr_png_)
