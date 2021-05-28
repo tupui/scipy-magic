@@ -14,24 +14,33 @@ def _repr_png_(distribution: rv_frozen) -> bytes:
         f" kwargs={distribution.kwds}), N=1000"
     )
 
-    fig, ax = plt.subplots()
+    fig, axs = plt.subplots(nrows=1, ncols=2, sharex=True, figsize=(9, 4))
+
+    x = np.linspace(distribution.ppf(0.01), distribution.ppf(0.99), 100)
 
     # PDF
-    x = np.linspace(distribution.ppf(0.01), distribution.ppf(0.99), 100)
     pdf = distribution.pdf(x)
-    ax.plot(x, pdf, "-", lw=5, alpha=0.6)
+    axs[0].plot(x, pdf, "-", lw=5, alpha=0.6)
+
+    # CDF
+    cdf = distribution.cdf(x)
+    axs[1].plot(x, cdf, "-", lw=5, alpha=0.6)
 
     # Empirical PDF
     sample = distribution.rvs(size=1000)
-    ax.hist(sample, density=True, histtype="stepfilled", alpha=0.2)
 
     # discrete samples
     delta = np.max(pdf) * 5e-2
-    ax.plot(sample[:100], -delta - delta * np.random.random(100), "+k")
+    axs[0].plot(sample[:100], -delta - delta * np.random.random(100), "+k")
 
-    ax.set_title(title)
-    ax.set_ylabel(r"$f$")
-    ax.set_xlabel(r"$x$")
+    fig.suptitle(title)
+    axs[0].set_title("PDF")
+    axs[0].set_ylabel(r"$f$")
+    axs[0].set_xlabel(r"$x$")
+
+    axs[1].set_title("CDF")
+    axs[1].set_ylabel(r"$F$")
+    axs[1].set_xlabel(r"$x$")
 
     data = print_figure(fig, "png")
 
