@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -5,6 +7,7 @@ from IPython.core.pylabtools import print_figure
 from scipy.stats.kde import gaussian_kde
 
 
+@lru_cache
 def _repr_png_(kde: gaussian_kde) -> bytes:
     sample = kde.dataset
     n, dim = sample.shape

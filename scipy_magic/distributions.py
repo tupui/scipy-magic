@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -5,6 +7,7 @@ from IPython.core.pylabtools import print_figure
 from scipy.stats._distn_infrastructure import rv_frozen
 
 
+@lru_cache
 def _repr_png_(distribution: rv_frozen) -> bytes:
     title = (
         f"{distribution.dist.name}(args={distribution.args},"
