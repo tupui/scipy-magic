@@ -5,12 +5,20 @@ from IPython.core.pylabtools import print_figure
 from scipy.stats._distn_infrastructure import rv_frozen
 
 
-def _repr_pretty_(distribution, p, cycle) -> str:
-    repr = (
-        f"{distribution.dist.name}(*{distribution.args},"
-        f" **{distribution.kwds})"
-    )
-    return p.text(repr)
+def _repr_pretty_(distribution, p, cycle) -> None:
+    name = distribution.dist.name
+    with p.group(len(name) + 1, name + "(", ")"):
+        for i, arg in enumerate(distribution.args):
+            if i > 0:
+                p.text(",")
+                p.breakable()
+            p.pretty(arg)
+        for i, (key, value) in enumerate(distribution.kwds.items()):
+            if i > 0 or len(distribution.args) > 0:
+                p.text(",")
+                p.breakable()
+            p.text(key + "=")
+            p.pretty(value)
 
 
 def _repr_png_(distribution: rv_frozen) -> bytes:
