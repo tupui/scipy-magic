@@ -7,6 +7,22 @@ from IPython.core.pylabtools import print_figure
 from scipy.stats._distn_infrastructure import rv_frozen
 
 
+def _repr_pretty_(distribution, p, cycle) -> None:
+    name = distribution.dist.name
+    with p.group(len(name) + 1, name + "(", ")"):
+        for i, arg in enumerate(distribution.args):
+            if i > 0:
+                p.text(",")
+                p.breakable()
+            p.pretty(arg)
+        for i, (key, value) in enumerate(distribution.kwds.items()):
+            if i > 0 or len(distribution.args) > 0:
+                p.text(",")
+                p.breakable()
+            p.text(key + "=")
+            p.pretty(value)
+
+
 @lru_cache
 def _repr_png_(distribution: rv_frozen) -> bytes:
     title = (
@@ -54,4 +70,9 @@ def load_ipython_extension(ipython) -> None:
     png_f = ipython.display_formatter.formatters["image/png"]
     png_f.for_type_by_name(
         "scipy.stats._distn_infrastructure", "rv_frozen", _repr_png_
+    )
+
+    plain_f = ipython.display_formatter.formatters["text/plain"]
+    plain_f.for_type_by_name(
+        "scipy.stats._distn_infrastructure", "rv_frozen", _repr_pretty_
     )
