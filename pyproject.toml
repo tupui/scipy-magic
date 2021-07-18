@@ -5,15 +5,12 @@ description = "SciPy Magic"
 authors = ["Pamphile Roy <roy.pamphile@gmail.com>"]
 license = "BSD-3-Clause"
 readme = "README.md"
-repository = "https://github.com/tupui/scipy_magic"
+repository = "https://github.com/tupui/scipy-magic"
 keywords = ["scipy", "ipython"]
-classifiers = [
-    "FRAMEWORK :: IPYTHON"
-]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.10"
-scipy = "^1.6.3"
+scipy = "^1.7.0"
 matplotlib = "^3.4.2"
 ipython = "^7.23.1"
 

@@ -17,7 +17,7 @@ https://pypi.org/project/scipy-magic
 from scipy.stats import norm
 norm(loc=3, scale=2)
 ```
-![Package version](doc/_static/norm_dist.png)
+![norm distribution](https://raw.githubusercontent.com/tupui/scipy-magic/main/doc/_static/norm_dist.png)
 
 ## Installation
 
